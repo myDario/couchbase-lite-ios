@@ -20,6 +20,8 @@
     NSMutableDictionary* _properties;   // Cached property values, including changed values
     NSMutableSet* _changedNames;        // Names of properties that have been changed but not saved
     NSMutableDictionary* _changedAttachments;
+    
+    NSMutableDictionary* _overrideProperties;   // Used to temprarily override the property values for KVO
 }
 @property (readwrite, retain) CBLDocument* document;
 @property (readwrite) bool needsSave;

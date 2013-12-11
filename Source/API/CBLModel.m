@@ -168,9 +168,31 @@
     [self markExternallyChanged];
     
     // Send KVO notifications about all my properties in case they changed:
-    NSSet* keys = [[self class] propertyNames];
+    NSMutableSet* keys = [NSMutableSet setWithSet:[[self class] propertyNames]];
+    
+    // Don't send notifications for overridden properties, as they will not change
+    [keys minusSet:_changedNames];
+    
+    // restore the previous values for the duration of
+    // willChange notification;
+    NSArray* history = [_document.currentRevision getRevisionHistory:nil];
+    if (history.count > 1) {
+        CBLRevision* prevRevision = (CBLRevision*)[history objectAtIndex:history.count - 2];
+        
+        _overrideProperties = [NSMutableDictionary dictionary];
+        
+        // in case no properties are available in the previous revision
+        // then the KVO old value will be nil for all objects
+        if (prevRevision.propertiesAvailable) {
+            [_overrideProperties addEntriesFromDictionary:prevRevision.properties];
+        }
+        
+    }
+    
     for (NSString* key in keys)
         [self willChangeValueForKey: key];
+    
+    _overrideProperties = nil;
     
     // Remove unchanged cached values in _properties:
     if (_changedNames && _properties) {
@@ -191,8 +213,15 @@
     return CFAbsoluteTimeGetCurrent() - _changedTime;
 }
 
++(BOOL)automaticallyNotifiesObserversOfTimeSinceExternallyChanged
+{
+    return NO;
+}
+
 - (void) markExternallyChanged {
+    [self willChangeValueForKey:@"timeSinceExternallyChanged"];
     _changedTime = CFAbsoluteTimeGetCurrent();
+    [self didChangeValueForKey:@"timeSinceExternallyChanged"];
 }
 
 
@@ -388,9 +417,17 @@
 
 
 - (id) getValueOfProperty: (NSString*)property {
-    id value = _properties[property];
-    if (!value && !_isNew && ![_changedNames containsObject: property]) {
-        value = [_document propertyForKey: property];
+    
+    id value;
+    
+    if (_overrideProperties) {
+        value = _overrideProperties[property];
+    }
+    else {
+        value = _properties[property];
+        if (!value && !_isNew && ![_changedNames containsObject: property]) {
+            value = [_document propertyForKey: property];
+        }
     }
     return value;
 }
