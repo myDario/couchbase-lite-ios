@@ -251,6 +251,7 @@ static int findCommonAncestor(CBL_Revision* rev, NSArray* possibleIDs);
                         options |= kCBLBigAttachmentsFollow;
                     CBLStatus status;
                     rev = [db revisionByLoadingBody: rev options: options status: &status];
+                    
                     CBL_MutableRevision* nuRev = [rev mutableCopy];
                     rev = nuRev;
                     if (status >= 300) {
@@ -259,6 +260,13 @@ static int findCommonAncestor(CBL_Revision* rev, NSArray* possibleIDs);
                         return nil;
                     }
 
+                    // Check for valid JSON
+                    if (nil == rev.properties) {
+                        Warn(@"%@: Couldn't get properties of %@", self, nuRev);
+                        [self revisionFailed];
+                        return nil;
+                    }
+                    
                     // Add the revision history:
                     NSArray* possibleAncestors = revResults[@"possible_ancestors"];
                     nuRev[@"_revisions"] = [db getRevisionHistoryDict: nuRev
