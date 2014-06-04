@@ -146,12 +146,12 @@
                                                                             error: NULL];
     if (!blob)
         return nil;
-    return [blob my_map: ^(id filename) {
+    return [blob my_map: (id)^(id filename) {
         CBLBlobKey key;
         if ([[self class] getKey: &key forFilename: filename])
-            return [NSData dataWithBytes: &key length: sizeof(key)];
+            return (id)[NSData dataWithBytes: &key length: sizeof(key)];
         else
-            return (NSData *)nil;
+            return (id)nil;
     }];
 }
 
