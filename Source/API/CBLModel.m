@@ -448,7 +448,8 @@
 + (Class) itemClassForArrayProperty: (NSString*)property {
     SEL sel = NSSelectorFromString([property stringByAppendingString: @"ItemClass"]);
     if ([self respondsToSelector: sel]) {
-        return (Class)objc_msgSend(self, sel);
+        id (*typed_msgSend)(id, SEL) = (void *)objc_msgSend;
+        return (Class)typed_msgSend(self, sel);
     }
     return Nil;
 }
