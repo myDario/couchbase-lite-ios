@@ -51,6 +51,16 @@
     self = [super init];
     if (self) {
         _onCompletion = [onCompletion copy];
+        
+        NSString *str = url.absoluteString;
+        if (![[str substringFromIndex:str.length-1] isEqualToString:@"/"]) {
+            if ([str containsString:@"?"]) {
+                url = [NSURL URLWithString:[str stringByAppendingString:@"&stale=ok"]];
+            } else {
+                url = [NSURL URLWithString:[str stringByAppendingString:@"?stale=ok"]];
+            }
+        }
+        
         _request = [[NSMutableURLRequest alloc] initWithURL: url];
         _request.HTTPMethod = method;
         _request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
