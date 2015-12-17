@@ -39,7 +39,7 @@
     [super start];
 
     NSURL* url = self.changesFeedURL;
-    CFHTTPMessageRef request = CFHTTPMessageCreateRequest(NULL, CFSTR("GET"),
+    CFHTTPMessageRef request = CFHTTPMessageCreateRequest(NULL, CFSTR("POST"),
                                                           (__bridge CFURLRef)url,
                                                           kCFHTTPVersion1_1);
     Assert(request);
