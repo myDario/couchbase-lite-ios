@@ -2628,7 +2628,6 @@
 			buildPhases = (
 				27B0B7A51492B83B00A817AD /* Sources */,
 				27B0B7A61492B83B00A817AD /* Frameworks */,
-				27B0B7E21492BA5900A817AD /* Build Fat Library */,
 			);
 			buildRules = (
 			);
@@ -2883,22 +2882,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		27B0B7E21492BA5900A817AD /* Build Fat Library */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Source/BuildFatLibrary.sh",
-			);
-			name = "Build Fat Library";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "source \"$SCRIPT_INPUT_FILE_0\"";
-			showEnvVarsInLog = 0;
-		};
 		27B0B8061492BE2100A817AD /* Copy Library */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
