@@ -9,7 +9,7 @@
 url=https://github.com/myDario/MYUtilities.git
 [submodule "vendor/oauthconsumer"]
 	path = vendor/oauthconsumer
-url=https://github.com/myDario/ios-oauthconsumer.git
+url=https://github.com/couchbaselabs/ios-oauthconsumer.git
 [submodule "vendor/JSON-Schema-Test-Suite"]
 	path = vendor/JSON-Schema-Test-Suite
 	url = git://github.com/json-schema/JSON-Schema-Test-Suite.git
